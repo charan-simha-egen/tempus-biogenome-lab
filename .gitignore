@@ -1,3 +1,5 @@
 # Ignore node_modules directory
 node_modules/
 dist/
+poc-lab-key.json
+src/downloads
