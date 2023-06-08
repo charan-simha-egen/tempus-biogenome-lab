@@ -70,6 +70,18 @@ app.delete("/api/delete-file", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/api/process-file", async (req: Request, res: Response) => {
+  try {
+    const { bucketName, fileName } = req.body;
+    console.log(`Downloading file ${bucketName}/${fileName}`);
+    const response = await _gcService.processCsvFile(bucketName, fileName);
+    res.json({ message: "File processed successfully", response });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on  http://localhost:${port}`);
 });

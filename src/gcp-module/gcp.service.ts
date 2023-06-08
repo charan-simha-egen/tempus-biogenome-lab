@@ -65,3 +65,30 @@ export async function deleteFile(
     console.error("Error:", error);
   }
 }
+
+export async function processCsvFile(bucketName: string, fileName: string) {
+  try {
+    const bucket = storage.bucket(bucketName);
+    const file = bucket.file(fileName);
+
+    // Read the CSV file as a stream
+    const stream = file.createReadStream();
+
+    // Process the CSV data
+    // ...
+
+    console.log(`Processing file ${bucketName}/${fileName}`);
+    // Write the modified data to a new stream
+    const modifiedStream = stream;
+
+    // Create a new file in the same bucket with the modified data
+    const modifiedFileName = `modified_${fileName}`;
+    const modifiedFile = bucket.file(modifiedFileName);
+    modifiedStream.pipe(modifiedFile.createWriteStream());
+
+    return modifiedFileName;
+  } catch (error) {
+    console.error("Error:", error);
+    return error;
+  }
+}
